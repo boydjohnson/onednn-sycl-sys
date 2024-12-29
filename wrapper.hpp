@@ -15,13 +15,11 @@ extern "C"
         }
         catch (const sycl::exception &e)
         {
-            // Handle exceptions (e.g., log the error)
             std::cerr << "SYCL Exception: " << e.what() << std::endl;
             return nullptr;
         }
     }
 
-    // Destroy the SYCL buffer
     void sycl_dnn_buffer_destroy(void *buffer_ptr)
     {
         try
@@ -31,7 +29,29 @@ extern "C"
         }
         catch (const sycl::exception &e)
         {
-            // Handle exceptions (e.g., log the error)
+            std::cerr << "SYCL Exception: " << e.what() << std::endl;
+        }
+    }
+
+    void sycl_dnn_buffer_write_to_host_data(void *buffer_ptr, void *host_data, size_t size_in_bytes)
+    {
+        try
+        {
+            if (!buffer_ptr || !host_data)
+            {
+                std::cerr << "Error: Invalid buffer pointer or host data pointer." << std::endl;
+                return;
+            }
+
+            sycl::buffer<char, 1> *buf = static_cast<sycl::buffer<char, 1> *>(buffer_ptr);
+
+            sycl::host_accessor host_acc(*buf, sycl::write_only);
+
+            std::memcpy(host_data, host_acc.get_pointer(), size_in_bytes);
+        }
+        catch (const sycl::exception &e)
+        {
+            std::cerr << "SYCL Exception: " << e.what() << std::endl;
         }
     }
 }
