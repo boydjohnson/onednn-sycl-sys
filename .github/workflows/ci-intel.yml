@@ -47,7 +47,7 @@ jobs:
 
       - name: Install Intel oneAPI DNNL version 2025.0.1
         if: steps.cache-oneapi.outputs.cache-hit != 'true'
-        run: sudo apt install -y intel-oneapi-dnnl-devel=2025.0.1-* intel-oneapi-compiler-dpcpp-cpp-common-2025.0
+        run: sudo apt install -y intel-oneapi-dnnl-devel=2025.0.1-* intel-oneapi-compiler-dpcpp-cpp-common-2025.0 intel-oneapi-dpcpp-cpp-2025.0
 
       - name: Build
         run: |
